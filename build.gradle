@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+// Spring Boot Starter Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+// Lombok (Compile time only)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+// Tomcat Embed Jasper (JSP 지원)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+// Jakarta Servlet API
+    implementation 'jakarta.servlet:jakarta.servlet-api'
+
+// Jakarta JSTL API
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
+
+// Glassfish Jakarta JSTL
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
+
+// Spring Boot Starter Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+// MyBatis Spring Boot Starter
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+// MySQL Connector
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+// MyBatis Spring Boot Starter Test
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+
+// Selenium Java
+    implementation 'org.seleniumhq.selenium:selenium-java:4.24.0'
+
+// WebDriver Manager
+    implementation 'io.github.bonigarcia:webdrivermanager:4.4.3'
+
+// Guava
+    implementation 'com.google.guava:guava:31.0-jre'
+
+// Spring Boot Starter Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+// Spring Context Support
+    implementation 'org.springframework:spring-context-support'
+
+// Spring Boot DevTools (Optional)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
+
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
