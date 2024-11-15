@@ -1,6 +1,8 @@
 package com.example.project.service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,9 +50,8 @@ public class ArticleService {
 	
 	
 	public List<Article> getHitMainArticles() {
-		System.out.println("zxczxczxczxczxczxczxczxczxczczxczxc");
+
 		List<Article> articles = articleRepository.getHitMainArticles();
-		System.out.println("articles from repository: " + articles);
 		return articles;
 	}
 
@@ -110,6 +111,7 @@ public class ArticleService {
 	}
 
 	public int getCurrentArticleId() {
+
 		return articleRepository.getCurrentArticleId();
 
 	}
@@ -119,6 +121,8 @@ public class ArticleService {
 
 		int id = articleRepository.getLastInsertId();
 
+		String updatedBody = updateImagePaths(body,Integer.valueOf(boardId) , id);
+		articleRepository.bodyUpdate(updatedBody,id);
 		return ResultData.from("S-1", Ut.f("%d번 글이 등록되었습니다", id), "등록 된 게시글의 id", id);
 	}
 
@@ -127,6 +131,26 @@ public class ArticleService {
 	}
 
 
+	public String updateImagePaths(String body, int boardId, int articleId) {
+		// 정규식으로 이미지 경로 추출
+		Pattern pattern = Pattern.compile("!\\[\\]\\((/images/[^)]+)\\)");
+		Matcher matcher = pattern.matcher(body);
+
+		StringBuffer updatedBody = new StringBuffer();
+		int index = 1;
+
+		while (matcher.find()) {
+			String oldPath = matcher.group(1);
+			String extension = oldPath.substring(oldPath.lastIndexOf(".")); // 확장자 추출
+			String newPath = String.format("/images/article/%d/%d-%d%s", boardId, articleId, index, extension);
+
+			matcher.appendReplacement(updatedBody, "![](" + newPath + ")");
+			index++;
+		}
+		matcher.appendTail(updatedBody);
+
+		return updatedBody.toString();
+	}
 
 
 

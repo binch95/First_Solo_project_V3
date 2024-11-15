@@ -85,6 +85,17 @@
         document.getElementById('minPrice').innerText = minPrice.toLocaleString();
     };
 
+    function handleImageError(img, boardId, articleId) {
+        const extensions = ['.png', '.jpeg'];
+        for (let ext of extensions) {
+            const newSrc = `/images/article/` + boardId + `/` + articleId + `-1` + ext;
+            img.onerror = null; // 중복 호출 방지
+            img.src = newSrc;
+            break;
+        }
+    }
+
+
 </script>
 
 <section class="mt-24 text-xl px-4">
@@ -120,10 +131,10 @@
                 <c:forEach var="article" items="${articles}">
                 <div class="product-item">
                     <a href="detail?id=${article.id}"> <!-- 상품 이미지 --> <img
-                            src="/images/article/${article.boardId}/${article.id}.jpg" alt=""
+                            src="${rq.getImgUri(article.boardId, article.id)}-1.jpg" alt=""
                             class="product-img"
-                            onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.png';"
-                            onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.jpeg';">
+                            onerror="handleImageError(this, ${article.boardId},${article.id});">
+
                         <!-- 상품 정보 -->
                         <div class="product-info">
                             <h3 class="product-title">${article.title}</h3>

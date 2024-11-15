@@ -149,6 +149,10 @@ public class Rq {
 		return Ut.jsReplace(msg, uri);
 	}
 
+	public String getImgUri(int boardId, int id) {
+		return "/images/article/" + boardId + "/" + id;
+	}
+
 	public String getProfileFallbackImgUri() {
 		return "https://via.placeholder.com/150/?text=*^_^*";
 	}

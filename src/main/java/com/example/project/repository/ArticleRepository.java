@@ -62,7 +62,7 @@ public interface ArticleRepository {
 
 
 	@Select("""
-                SELECT id, title, hitCount, price, bid, bidder_count, remaining_time, is_sold
+                SELECT *
                 FROM article
                 ORDER BY hitCount DESC
                 LIMIT 10
@@ -137,7 +137,7 @@ public interface ArticleRepository {
 
 
 	@Select("""
-			SELECT MAX(id) + 1
+			SELECT COALESCE(MAX(id)+1, 1)
 			FROM article
 			""")
 	public int getCurrentArticleId();
@@ -177,5 +177,11 @@ public interface ArticleRepository {
 	
 	public void updateImageUrl(int articleId, String imageUrl);
 
-
+	@Update("""
+			UPDATE article
+			SET updateDate = NOW(),
+    		`body` = #{updatedBody}
+			WHERE id = #{id}
+			""")
+	void bodyUpdate(String updatedBody,int id);
 }

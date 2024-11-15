@@ -19,7 +19,7 @@ public class UsrHomeController {
 	
 	@RequestMapping("/usr/home/main")
 	public String showMain(Model model) {
-		System.out.println("asndfklnaekslnfklnklewnfklnlwklenfklwenf415151");
+
 		List<Article> articles = articleService.getHitMainArticles();
 		System.out.println("articles : " + articles);
         model.addAttribute("articles", articles);

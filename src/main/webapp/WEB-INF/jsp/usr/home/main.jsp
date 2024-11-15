@@ -107,6 +107,19 @@
     </style>
 
 </head>
+<script>
+
+    function handleImageError(img, boardId, articleId) {
+        const extensions = ['.png', '.jpeg'];
+        for (let ext of extensions) {
+            const newSrc = `/images/article/` + boardId + `/` + articleId + `-1` + ext;
+            img.onerror = null; // 중복 호출 방지
+            img.src = newSrc;
+            break;
+        }
+    }
+
+</script>
 <body>
 
 <div class="mainImg border flex justify-center">
@@ -128,9 +141,11 @@
                     <div class="slide">
                         <!-- 상품 이미지 -->
                         <div class="product-item">
-                            <img src="/images/article/${article.boardId}/${article.id}.jpg" alt="" class="product-img"
-                                 onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.png';"
-                                 onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.jpeg';">
+                            <a href="../article/detail?id=${article.id}">
+                            <img src="${rq.getImgUri(article.boardId, article.id)}-1.jpg" alt=""
+                                 class="product-img"
+                                 onerror="handleImageError(this, ${article.boardId},${article.id});">
+                            </a>
                         </div>
 
 
@@ -160,9 +175,11 @@
                     <div class="slide">
                         <!-- 상품 이미지 -->
                         <div class="product-item">
-                            <img src="/images/article/${article.boardId}/${article.id}.jpg" alt="" class="product-img"
-                                 onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.png';"
-                                 onerror="this.onerror=null; this.src='/images/article/${article.boardId}/${article.id}.jpeg';">
+                            <a href="../article/detail?id=${article.id}">
+                            <img src="${rq.getImgUri(article.boardId, article.id)}-1.jpg" alt=""
+                                 class="product-img"
+                                 onerror="handleImageError(this, ${article.boardId},${article.id});">
+                            </a>
                         </div>
 
                         <div class="product-info">

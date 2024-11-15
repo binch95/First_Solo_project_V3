@@ -42,42 +42,42 @@ public class ImageService {
     }
 
     public void saveImage(String imageUrl, int articleId, int boardId) throws IOException {
+        // 상대 경로를 실제 파일 시스템 경로로 변환
+        Path sourcePath = Paths.get(uploadDir, imageUrl.startsWith("/images/") ? imageUrl.substring(8) : imageUrl);
+        if (!Files.exists(sourcePath)) {
+            throw new IOException("이미지 파일이 존재하지 않습니다: " + sourcePath);
+        }
+
         // article/boardId 디렉토리 생성
         Path directoryPath = Paths.get(uploadDir, "article", String.valueOf(boardId));
         if (!Files.exists(directoryPath)) {
             Files.createDirectories(directoryPath);
         }
 
-        // HTTP로 이미지 다운로드
-        InputStream in = new URL(imageUrl).openStream();
-
-        // 파일 이름 설정: id-1.png, id-2.png, ...
+        // 새 파일 이름 설정: id-1.png, id-2.png, ...
         int fileIndex = getNextFileIndex(directoryPath, articleId);
-        String fileExtension = getFileExtension(imageUrl); // 확장자 추출
-        String fileName = articleId + "-" + fileIndex + fileExtension;
+        String fileExtension = getFileExtension(sourcePath.toString()); // 확장자 추출
+        String newFileName = articleId + "-" + fileIndex + fileExtension;
 
-        // 파일 저장 경로
-        Path filePath = directoryPath.resolve(fileName);
+        // 새 파일 경로
+        Path destinationPath = directoryPath.resolve(newFileName);
 
-        // 파일 저장
-        Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
-        in.close();
+        // 파일 이동
+        Files.move(sourcePath, destinationPath);
     }
 
     private int getNextFileIndex(Path directoryPath, int articleId) throws IOException {
-        // 디렉토리에 이미 저장된 파일 목록 확인
         try (Stream<Path> files = Files.list(directoryPath)) {
             return (int) files
                     .filter(path -> path.getFileName().toString().startsWith(articleId + "-"))
-                    .count() + 1; // 기존 파일 개수 + 1
+                    .count() + 1;
         }
     }
 
-    private String getFileExtension(String url) {
-        // URL에서 확장자를 추출
-        int lastDotIndex = url.lastIndexOf(".");
+    private String getFileExtension(String filePath) {
+        int lastDotIndex = filePath.lastIndexOf(".");
         if (lastDotIndex != -1) {
-            return url.substring(lastDotIndex);
+            return filePath.substring(lastDotIndex);
         }
         return ""; // 확장자가 없으면 빈 문자열 반환
     }

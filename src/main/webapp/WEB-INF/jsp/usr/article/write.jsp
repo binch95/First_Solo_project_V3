@@ -6,6 +6,7 @@
 <hr/>
 
 <script>
+
     function ArticleWrite__submit(form) {
         form.title.value = form.title.value.trim();
 
@@ -15,7 +16,7 @@
         }
 
         // 에디터 객체 가져오기
-        const editor = toastui.Editor.factory({
+        toastui.Editor.factory({
             el: document.querySelector('#editor')
         });
 
@@ -26,17 +27,20 @@
             return;
         }
 
-        // 폼의 body 필드에 에디터 내용을 저장
-        form.body.value = markdown;
-
-        // 이미지 URL들을 hidden 필드에 추가
+        // 이미지 URL들을 Markdown에서 추출
         const imageUrls = [];
-        document.querySelectorAll('.editor-image-url').forEach(function(img) {
-            imageUrls.push(img.src);  // 업로드된 이미지 URL을 배열에 저장
-        });
+        const imageRegex = /!\[.*?\]\((.*?)\)/g; // Markdown 이미지 패턴
+        let match;
+        while ((match = imageRegex.exec(markdown)) !== null) {
+            imageUrls.push(match[1]); // 이미지 URL만 추출
+        }
+
 
         // 이미지 URL들을 hidden input 필드에 저장
-        form.imageUrls.value = imageUrls.join(',');  // 쉼표로 구분하여 전송
+        form.imageUrls.value = imageUrls.join(','); // 쉼표로 구분하여 전송
+
+        // 폼의 body 필드에 에디터 내용을 저장
+        form.body.value = markdown;
 
         // 서버로 폼 전송
         form.submit();
@@ -94,7 +98,7 @@
                 <tr>
                     <th>내용</th>
                     <td style="text-align: center;">
-                        <div id="editor"></div>
+                        <div id="editor" class="bodyman"></div>
                     </td>
                 </tr>
 
@@ -113,11 +117,13 @@
     </div>
 
     <script>
+
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'),
             height: '500px',
             initialEditType: 'markdown',
             previewStyle: 'vertical',
+            initialValue: '', // 초기 마크다운 값
             hooks: {
                 addImageBlobHook: function (blob, callback) {
                     // 이미지 파일을 업로드하는 FormData 생성

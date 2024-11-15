@@ -200,13 +200,14 @@ public class UsrArticleController {
 		// 이미지 URL들을 처리 (쉼표로 구분된 URL들)
 		String[] images = imageUrls.split(",");
 		// images 배열을 사용하여 처리
-		System.out.println("kdnsaklf ㄴㄹㄴㅇㅁㄹ : " + imageUrls);
         // 파일 업로드
+
+		System.out.println("imageUrls : " + imageUrls);
+		System.out.println("images : " + images);
 		if (images != null && images.length > 0) {
 			try {
 				// images 배열을 순차적으로 처리
 				for (String imageUrl : images) {
-					System.out.println("");
 					// 각 이미지 URL을 처리 (예: DB에 저장하거나, 다른 서비스에 저장)
 					imageService.saveImage(imageUrl, id, article.getBoardId());  // 이미지 업로드
 				}
@@ -214,6 +215,8 @@ public class UsrArticleController {
 				return Ut.jsHistoryBack("F-4", "이미지 업로드 중 오류 발생.");
 			}
 		}
+
+		System.out.println("sknfkdslf : " + body);
 
         return Ut.jsReplace(writeArticleRd.getResultCode(), writeArticleRd.getMsg(), "../article/detail?id=" + id);
     }
