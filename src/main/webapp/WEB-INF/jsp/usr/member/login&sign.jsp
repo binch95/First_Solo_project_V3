@@ -263,7 +263,7 @@
 	color: #fff;
 }
 /* ----------------------------------
-background text    
+background text
 ------------------------------------
  */
 .cont_ba_opcitiy {
@@ -527,7 +527,8 @@ $(document).ready(function() {
 							<h2>SIGN UP</h2>
 							<input type="text" placeholder="LoginId" name="loginId" autocomplete="off" /> <input type="password"
 								placeholder="Password" name="loginPw" autocomplete="off" /> <input type="text" placeholder="Name" name="name"
-								autocomplete="off" /> <input type="text" placeholder="Email" name="email" autocomplete="off" /> <input
+								autocomplete="off" /> <input type="text" placeholder="nickName" name="nickName"
+															 autocomplete="off" /><input type="text" placeholder="Email" name="email" autocomplete="off" /> <input
 								type="text" placeholder="Phone_Num" name="cellphoneNum" autocomplete="off" />
 							<button class="btn_sign_up">SIGN UP</button>
 						</div>

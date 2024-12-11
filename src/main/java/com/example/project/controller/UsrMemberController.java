@@ -32,7 +32,7 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doSign")
 	@ResponseBody
-	public String doSign(HttpServletRequest req, String loginId, String loginPw, String name,  String cellphoneNum, String email) {
+	public String doSign(HttpServletRequest req, String loginId, String loginPw, String name,String nickName,  String cellphoneNum, String email) {
 
 		if (Ut.isEmptyOrNull(loginId)) {
 			return Ut.jsHistoryBack("F-1", "loginId 입력 x");
@@ -43,6 +43,9 @@ public class UsrMemberController {
 		if (Ut.isEmptyOrNull(name)) {
 			return Ut.jsHistoryBack("F-3", "name 입력 x");
 		}
+		if (Ut.isEmptyOrNull(nickName)) {
+			return Ut.jsHistoryBack("F-3", "nickName 입력 x");
+		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
 			return Ut.jsHistoryBack("F-5", "cellphoneNum 입력 x");
 		}
@@ -50,7 +53,7 @@ public class UsrMemberController {
 			return Ut.jsHistoryBack("F-6", "email 입력 x");
 		}
 
-		ResultData signRd = memberService.sign(loginId, loginPw, name,  email,cellphoneNum);
+		ResultData signRd = memberService.sign(loginId, loginPw, name, nickName,  email,cellphoneNum);
 
 		if (signRd.isFail()) {
 			return Ut.jsHistoryBack(signRd.getResultCode(), signRd.getMsg());

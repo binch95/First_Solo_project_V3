@@ -19,11 +19,12 @@ public interface MemberRepository {
 			updateDate = NOW(), 
 			loginId = #{loginId}, 
 			loginPw = #{loginPw}, 
-			`name` = #{name}, 
+			`name` = #{name},
+    		`nickname` = #{nickName},
 			cellphoneNum = #{cellphoneNum}, 
 			email = #{email}
 			""")
-	public void doSign(String loginId, String loginPw, String name, String cellphoneNum, String email);
+	public void doSign(String loginId, String loginPw, String name, String nickName, String cellphoneNum, String email);
 
 	@Select("SELECT * FROM `member` WHERE id = #{id}")
 	public Member getMemberById(int id);
