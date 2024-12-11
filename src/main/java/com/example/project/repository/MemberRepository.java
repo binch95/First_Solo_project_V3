@@ -64,7 +64,7 @@ public interface MemberRepository {
 				WHERE id = #{loginedMemberId}
 			</script>
 			""")
-	public void modify(int loginedMemberId, String loginPw, String name, String cellphoneNum,
+	public void modify(int loginedMemberId, String loginPw, String name, String nickname, String cellphoneNum,
 			String email);
 
 	@Update("""
@@ -85,6 +85,6 @@ public interface MemberRepository {
 				WHERE id = #{loginedMemberId}
 			</script>
 			""")
-	public void modifyWithoutPw(int loginedMemberId, String name, String cellphoneNum, String email);
+	public void modifyWithoutPw(int loginedMemberId, String name, String nickname, String cellphoneNum, String email);
 
 }

@@ -101,5 +101,71 @@ public class UsrMemberController {
 
 		return Ut.jsReplace("S-1", Ut.f("로그아웃 성공"), "/");
 	}
+
+	@RequestMapping("/usr/member/myPage")
+	public String showmyPage() {
+		return "usr/member/myPage";
+	}
+
+	@RequestMapping("/usr/member/modify")
+	public String showmyModify() {
+		return "usr/member/modify";
+	}
+
+	@RequestMapping("/usr/member/checkPw")
+	public String showCheckPw() {
+		return "usr/member/checkPw";
+	}
+
+	@RequestMapping("/usr/member/doCheckPw")
+	@ResponseBody
+	public String doCheckPw(String loginPw) {
+		if (Ut.isEmptyOrNull(loginPw)) {
+			return Ut.jsHistoryBack("F-1", "비밀번호를 입력해주세요.");
+		}
+
+		if (rq.getLoginedMember().getLoginPw().equals(Ut.sha256(loginPw)) == false) {
+			return Ut.jsHistoryBack("F-2", "비밀번호가 틀렸습니다.");
+		}
+
+		return Ut.jsReplace("S-1", Ut.f("비밀번호 확인 성공"), "modify");
+	}
+
+
+	@RequestMapping("/usr/member/doModify")
+	@ResponseBody
+	public String doModify(HttpServletRequest req, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		// 비번을 입력하지 않아도 회원정보 수정이 가능하도록 만들어야 함.(비번은 바꾸기 싫을때.)
+		// 비번은 안바꾸는거 가능(사용자 입장). 비번 null 체크 X
+
+		if (Ut.isEmptyOrNull(name)) {
+			return Ut.jsHistoryBack("F-3", Ut.f("%d(을)를 제대로 입력해주세요.", name));
+		}
+		if (Ut.isEmptyOrNull(nickname)) {
+			return Ut.jsHistoryBack("F-4", Ut.f("%d(을)를 제대로 입력해주세요.", nickname));
+		}
+		if (Ut.isEmptyOrNull(cellphoneNum)) {
+			return Ut.jsHistoryBack("F-5", Ut.f("%d(을)를 제대로 입력해주세요.", cellphoneNum));
+		}
+		if (Ut.isEmptyOrNull(email)) {
+			return Ut.jsHistoryBack("F-6", Ut.f("%d(을)를 제대로 입력해주세요.", email));
+		}
+
+		ResultData modifyRd;
+
+		if (Ut.isEmptyOrNull(loginPw)) {
+
+			modifyRd = memberService.modifyWithoutPw(rq.getLoginedMemberId(), name, nickname, cellphoneNum, email);
+
+		} else {
+			modifyRd = memberService.modify(rq.getLoginedMemberId(), loginPw, name, nickname, cellphoneNum, email);
+		}
+
+
+		return Ut.jsReplace(modifyRd.getResultCode(), modifyRd.getMsg(), "../member/myPage");
+	}
 	
 }

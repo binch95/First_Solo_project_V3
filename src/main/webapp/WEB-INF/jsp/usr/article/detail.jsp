@@ -145,7 +145,7 @@
 
             <!-- 버튼 섹션 -->
             <div class="flex space-x-4 mt-6">
-                <button class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">입찰하기</button>
+                <button class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">입찰하기</button>
                 <button class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">구매하기</button>
                 <button class="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400">관심상품등록</button>
             </div>
@@ -155,30 +155,30 @@
 
     <!-- 세부 정보 섹션 -->
     <div class="additional-info mt-8">
-        <table class="table-auto border-collapse w-full text-left">
-            <thead>
+        <table class="table-auto border-collapse w-full text-left" >
+            <thead style="text-align: center;">
             <tr class="bg-gray-200">
                 <th class="px-4 py-2">항목</th>
                 <th class="px-4 py-2">내용</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr style="text-align: center;">
                 <td class="border px-4 py-2">ID</td>
                 <td class="border px-4 py-2">${article.id}</td>
             </tr>
-            <tr>
+            <tr style="text-align: center;">
                 <td class="border px-4 py-2">게시판 ID</td>
                 <td class="border px-4 py-2">${article.boardId}</td>
             </tr>
-            <tr>
+            <tr style="text-align: center;">
                 <td class="border px-4 py-2">마지막 수정일</td>
                 <td class="border px-4 py-2">${article.updateDate}</td>
             </tr>
             <tr>
-                <td class="border px-4 py-2">본문</td>
-                <td>
-                    <div class="toast-ui-viewer">
+                <td class="border px-4 py-2" style="text-align: center;">본문</td>
+                <td class="border">
+                    <div class="toast-ui-viewer" >
                         <script type="text/html">${article.body}</script>
                     </div>
                 </td>
